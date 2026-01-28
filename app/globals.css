@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfbf9;
-  --foreground: #1a1a1a;
-  --primary: #1a4d3e;
-  --primary-light: #2d6a4f;
-  --primary-dark: #0f3d2e;
-  --secondary: #f5eeeb;
-  --accent: #c9707d;
-  --accent-light: #d4919e;
-  --accent-dark: #b85c69;
+  --background: #fafafa;
+  --foreground: #1f2937;
+  --primary: #2563eb;
+  --primary-light: #3b82f6;
+  --primary-dark: #1d4ed8;
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+  --accent-dark: #d97706;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --text-muted: #6b7280;
 }
 
 @theme inline {
@@ -18,10 +20,12 @@
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
   --color-primary-dark: var(--primary-dark);
-  --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-accent-light: var(--accent-light);
   --color-accent-dark: var(--accent-dark);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
   --font-heading: var(--font-cormorant);
   --font-body: var(--font-lato);
 }
@@ -38,4 +42,50 @@ h1, h2, h3, h4, h5, h6 {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Custom slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* Selection animation */
+.selection-ring {
+  transition: all 0.2s ease-in-out;
+}
+
+.selection-ring:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

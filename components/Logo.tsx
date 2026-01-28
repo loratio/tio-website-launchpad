@@ -7,8 +7,8 @@ interface LogoProps {
 }
 
 export default function Logo({ variant = "default", showText = true, size = "md" }: LogoProps) {
-  const primaryColor = variant === "default" ? "#1a4d3e" : "#ffffff";
-  const accentColor = "#c9707d";
+  const primaryColor = variant === "default" ? "#2563eb" : "#ffffff";
+  const accentColor = "#f59e0b";
 
   const sizes = {
     sm: { icon: 32, text: "text-xl" },
@@ -20,7 +20,7 @@ export default function Logo({ variant = "default", showText = true, size = "md"
 
   return (
     <Link href="/" className="flex items-center gap-3 group">
-      {/* Custom Logo Mark */}
+      {/* Logo Mark - Abstract "t" with creative flair */}
       <svg
         width={icon}
         height={icon}
@@ -29,48 +29,34 @@ export default function Logo({ variant = "default", showText = true, size = "md"
         xmlns="http://www.w3.org/2000/svg"
         className="transition-transform group-hover:scale-105"
       >
-        {/* Elegant circle frame */}
+        {/* Background circle */}
         <circle
           cx="24"
           cy="24"
           r="22"
-          stroke={primaryColor}
-          strokeWidth="1.5"
-          fill="none"
+          fill={primaryColor}
+          opacity="0.1"
         />
 
-        {/* Stylized "L" with serif details */}
+        {/* Stylized "t" */}
         <path
-          d="M16 12V36H32"
+          d="M24 10V38"
           stroke={primaryColor}
-          strokeWidth="2"
+          strokeWidth="3"
           strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
         />
-
-        {/* Decorative serif on L */}
         <path
-          d="M13 12H19"
+          d="M16 18H32"
           stroke={primaryColor}
-          strokeWidth="1.5"
+          strokeWidth="3"
           strokeLinecap="round"
         />
 
-        {/* Elegant smile curve - the orthodontic touch */}
-        <path
-          d="M18 28C20 31 28 31 30 28"
-          stroke={accentColor}
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="none"
-        />
-
-        {/* Small decorative dot accent */}
+        {/* Creative accent dot */}
         <circle
-          cx="34"
-          cy="36"
-          r="2"
+          cx="36"
+          cy="12"
+          r="4"
           fill={accentColor}
         />
       </svg>
@@ -82,13 +68,13 @@ export default function Logo({ variant = "default", showText = true, size = "md"
             className={`${text} font-semibold tracking-wide font-[family-name:var(--font-cormorant)]`}
             style={{ color: primaryColor }}
           >
-            Lora Ortho
+            tio
           </span>
           <span
             className="text-[10px] tracking-[0.2em] uppercase font-light"
-            style={{ color: variant === "default" ? "rgba(26, 77, 62, 0.6)" : "rgba(255, 255, 255, 0.7)" }}
+            style={{ color: variant === "default" ? "rgba(37, 99, 235, 0.6)" : "rgba(255, 255, 255, 0.7)" }}
           >
-            Orthodontics
+            Website LookBook
           </span>
         </div>
       )}

@@ -17,8 +17,8 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "Lora Ortho | Creating Beautiful Smiles",
-  description: "Lora Ortho provides expert orthodontic care including braces, Invisalign, and more. Transform your smile with our personalized treatment plans.",
+  title: "tio Website LookBook | Design Brief Wizard",
+  description: "Discover your website's visual identity through an interactive design brief experience. Select styles, colors, and define your brand personality.",
 };
 
 export default function RootLayout({
@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${cormorant.variable} ${lato.variable} antialiased`}
       >
         <Header />
-        <main className="min-h-screen bg-[#fdfbf9]">
+        <main className="min-h-screen bg-background pt-16">
           {children}
         </main>
         <Footer />
