@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import StepIndicator from "./StepIndicator";
 import StepNavigation from "./StepNavigation";
+import GetStarted from "./steps/GetStarted";
 import StyleSelection from "./steps/StyleSelection";
 import BrandAttributes from "./steps/BrandAttributes";
 import ColorExploration from "./steps/ColorExploration";
@@ -11,23 +12,32 @@ import ProjectBrief from "./steps/ProjectBrief";
 import Summary from "./steps/Summary";
 
 export interface WizardData {
-  // Step 1: Design Styles
-  selectedStyles: string[];
-
-  // Step 2: Brand Attributes
-  attributes: {
-    geometric: number; // 0 = Geometric, 100 = Organic
-    abstract: number;  // 0 = Abstract, 100 = Literal
-    classic: number;   // 0 = Classic, 100 = Modern
-    playful: number;   // 0 = Playful, 100 = Serious
-    simple: number;    // 0 = Simple, 100 = Complex
+  // Step 1: Contact Info
+  contactInfo: {
+    practiceName: string;
+    fullName: string;
+    email: string;
+    currentWebsite: string;
+    appointmentEmail: string;
   };
 
-  // Step 3: Colors
+  // Step 2: Design Styles
+  selectedStyles: string[];
+
+  // Step 3: Brand Attributes
+  attributes: {
+    geometric: number;
+    abstract: number;
+    classic: number;
+    playful: number;
+    simple: number;
+  };
+
+  // Step 4: Colors
   selectedPalettes: string[];
   customColors: string[];
 
-  // Step 4: Project Brief
+  // Step 5: Project Brief
   projectInfo: {
     businessName: string;
     industry: string;
@@ -39,6 +49,13 @@ export interface WizardData {
 }
 
 const initialData: WizardData = {
+  contactInfo: {
+    practiceName: "",
+    fullName: "",
+    email: "",
+    currentWebsite: "",
+    appointmentEmail: "",
+  },
   selectedStyles: [],
   attributes: {
     geometric: 50,
@@ -62,11 +79,12 @@ const initialData: WizardData = {
 const STORAGE_KEY = "tio-wizard-data";
 
 const steps = [
-  { id: 1, title: "Design Styles", shortTitle: "Styles" },
-  { id: 2, title: "Brand Attributes", shortTitle: "Attributes" },
-  { id: 3, title: "Color Exploration", shortTitle: "Colors" },
-  { id: 4, title: "Project Brief", shortTitle: "Brief" },
-  { id: 5, title: "Review & Submit", shortTitle: "Review" },
+  { id: 1, title: "Get Started", shortTitle: "Start" },
+  { id: 2, title: "Design Styles", shortTitle: "Styles" },
+  { id: 3, title: "Brand Attributes", shortTitle: "Attributes" },
+  { id: 4, title: "Color Exploration", shortTitle: "Colors" },
+  { id: 5, title: "Project Brief", shortTitle: "Brief" },
+  { id: 6, title: "Review & Submit", shortTitle: "Review" },
 ];
 
 export default function WizardContainer() {
@@ -97,13 +115,13 @@ export default function WizardContainer() {
   }, []);
 
   const goToStep = (step: number) => {
-    if (step >= 1 && step <= 5) {
+    if (step >= 1 && step <= 6) {
       setCurrentStep(step);
     }
   };
 
   const handleNext = () => {
-    if (currentStep < 5) {
+    if (currentStep < 6) {
       setCurrentStep((prev) => prev + 1);
     }
   };
@@ -162,14 +180,16 @@ export default function WizardContainer() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <StyleSelection data={data} updateData={updateData} />;
+        return <GetStarted data={data} updateData={updateData} />;
       case 2:
-        return <BrandAttributes data={data} updateData={updateData} />;
+        return <StyleSelection data={data} updateData={updateData} />;
       case 3:
-        return <ColorExploration data={data} updateData={updateData} />;
+        return <BrandAttributes data={data} updateData={updateData} />;
       case 4:
-        return <ProjectBrief data={data} updateData={updateData} />;
+        return <ColorExploration data={data} updateData={updateData} />;
       case 5:
+        return <ProjectBrief data={data} updateData={updateData} />;
+      case 6:
         return <Summary data={data} goToStep={goToStep} />;
       default:
         return null;
@@ -185,7 +205,7 @@ export default function WizardContainer() {
           onStepClick={goToStep}
         />
 
-        <div className="mt-8 bg-white rounded-2xl shadow-lg p-6 md:p-10">
+        <div className="mt-8 bg-white rounded-2xl shadow-lg p-6 md:p-10 border border-secondary/30">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -201,7 +221,7 @@ export default function WizardContainer() {
 
         <StepNavigation
           currentStep={currentStep}
-          totalSteps={5}
+          totalSteps={6}
           onPrevious={handlePrevious}
           onNext={handleNext}
           onSubmit={handleSubmit}

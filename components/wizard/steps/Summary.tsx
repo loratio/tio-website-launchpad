@@ -81,14 +81,14 @@ function SectionCard({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: step * 0.1 }}
-      className="bg-gray-50 rounded-xl p-5"
+      transition={{ delay: step * 0.05 }}
+      className="bg-secondary/20 rounded-xl p-5"
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold text-gray-900">{title}</h3>
+        <h3 className="font-semibold text-primary">{title}</h3>
         <button
           onClick={() => goToStep(step)}
-          className="flex items-center gap-1 text-sm text-primary hover:text-primary-dark transition-colors"
+          className="flex items-center gap-1 text-sm text-primary hover:text-primary-light transition-colors"
         >
           <Edit2 className="w-4 h-4" />
           Edit
@@ -109,17 +109,53 @@ export default function Summary({ data, goToStep }: SummaryProps) {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 font-[family-name:var(--font-cormorant)]">
+        <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
           Review your design brief
         </h2>
-        <p className="text-gray-600">
+        <p className="text-text-muted">
           Review your selections below. Click &quot;Edit&quot; on any section to make changes.
         </p>
       </div>
 
       <div className="space-y-6">
+        {/* Contact Info */}
+        <SectionCard title="Contact Information" step={1} goToStep={goToStep}>
+          <div className="space-y-2">
+            <div>
+              <span className="text-sm text-text-muted">Practice Name: </span>
+              <span className="text-sm font-medium text-primary">
+                {data.contactInfo.practiceName || <span className="text-text-muted italic">Not provided</span>}
+              </span>
+            </div>
+            <div>
+              <span className="text-sm text-text-muted">Full Name: </span>
+              <span className="text-sm font-medium text-primary">
+                {data.contactInfo.fullName || <span className="text-text-muted italic">Not provided</span>}
+              </span>
+            </div>
+            <div>
+              <span className="text-sm text-text-muted">Email: </span>
+              <span className="text-sm font-medium text-primary">
+                {data.contactInfo.email || <span className="text-text-muted italic">Not provided</span>}
+              </span>
+            </div>
+            {data.contactInfo.currentWebsite && (
+              <div>
+                <span className="text-sm text-text-muted">Current Website: </span>
+                <span className="text-sm text-primary">{data.contactInfo.currentWebsite}</span>
+              </div>
+            )}
+            <div>
+              <span className="text-sm text-text-muted">Appointment Email: </span>
+              <span className="text-sm font-medium text-primary">
+                {data.contactInfo.appointmentEmail || <span className="text-text-muted italic">Not provided</span>}
+              </span>
+            </div>
+          </div>
+        </SectionCard>
+
         {/* Design Styles */}
-        <SectionCard title="Design Styles" step={1} goToStep={goToStep}>
+        <SectionCard title="Design Styles" step={2} goToStep={goToStep}>
           {data.selectedStyles.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {data.selectedStyles.map((style) => (
@@ -132,40 +168,40 @@ export default function Summary({ data, goToStep }: SummaryProps) {
               ))}
             </div>
           ) : (
-            <p className="text-gray-400 text-sm italic">No styles selected</p>
+            <p className="text-text-muted text-sm italic">No styles selected</p>
           )}
         </SectionCard>
 
         {/* Brand Attributes */}
-        <SectionCard title="Brand Attributes" step={2} goToStep={goToStep}>
+        <SectionCard title="Brand Attributes" step={3} goToStep={goToStep}>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             <div className="text-sm">
-              <span className="text-gray-500">Shape: </span>
-              <span className="font-medium">
+              <span className="text-text-muted">Shape: </span>
+              <span className="font-medium text-primary">
                 {getAttributeLabel(data.attributes.geometric, "Geometric", "Organic")}
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-gray-500">Style: </span>
-              <span className="font-medium">
+              <span className="text-text-muted">Style: </span>
+              <span className="font-medium text-primary">
                 {getAttributeLabel(data.attributes.abstract, "Abstract", "Literal")}
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-gray-500">Era: </span>
-              <span className="font-medium">
+              <span className="text-text-muted">Era: </span>
+              <span className="font-medium text-primary">
                 {getAttributeLabel(data.attributes.classic, "Classic", "Modern")}
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-gray-500">Tone: </span>
-              <span className="font-medium">
+              <span className="text-text-muted">Tone: </span>
+              <span className="font-medium text-primary">
                 {getAttributeLabel(data.attributes.playful, "Playful", "Serious")}
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-gray-500">Complexity: </span>
-              <span className="font-medium">
+              <span className="text-text-muted">Complexity: </span>
+              <span className="font-medium text-primary">
                 {getAttributeLabel(data.attributes.simple, "Simple", "Complex")}
               </span>
             </div>
@@ -173,7 +209,7 @@ export default function Summary({ data, goToStep }: SummaryProps) {
         </SectionCard>
 
         {/* Color Palettes */}
-        <SectionCard title="Color Exploration" step={3} goToStep={goToStep}>
+        <SectionCard title="Color Exploration" step={4} goToStep={goToStep}>
           {data.selectedPalettes.length > 0 || data.customColors.length > 0 ? (
             <div className="space-y-4">
               {data.selectedPalettes.map((paletteId) => (
@@ -187,7 +223,7 @@ export default function Summary({ data, goToStep }: SummaryProps) {
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-primary">
                     {paletteNames[paletteId] || paletteId}
                   </span>
                 </div>
@@ -198,67 +234,69 @@ export default function Summary({ data, goToStep }: SummaryProps) {
                     {data.customColors.map((color, i) => (
                       <div
                         key={i}
-                        className="w-6 h-6 rounded border border-gray-200"
+                        className="w-6 h-6 rounded border border-secondary"
                         style={{ backgroundColor: color }}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-700">Custom colors</span>
+                  <span className="text-sm text-primary">Custom colors</span>
                 </div>
               )}
             </div>
           ) : (
-            <p className="text-gray-400 text-sm italic">No palettes selected</p>
+            <p className="text-text-muted text-sm italic">No palettes selected</p>
           )}
         </SectionCard>
 
         {/* Project Brief */}
-        <SectionCard title="Project Details" step={4} goToStep={goToStep}>
+        <SectionCard title="Project Details" step={5} goToStep={goToStep}>
           <div className="space-y-3">
             <div>
-              <span className="text-sm text-gray-500">Business Name: </span>
-              <span className="text-sm font-medium">
-                {data.projectInfo.businessName || <span className="text-gray-400 italic">Not provided</span>}
+              <span className="text-sm text-text-muted">Business Name: </span>
+              <span className="text-sm font-medium text-primary">
+                {data.projectInfo.businessName || <span className="text-text-muted italic">Not provided</span>}
               </span>
             </div>
             <div>
-              <span className="text-sm text-gray-500">Industry: </span>
-              <span className="text-sm font-medium">
-                {industryNames[data.projectInfo.industry] || <span className="text-gray-400 italic">Not selected</span>}
+              <span className="text-sm text-text-muted">Industry: </span>
+              <span className="text-sm font-medium text-primary">
+                {industryNames[data.projectInfo.industry] || <span className="text-text-muted italic">Not selected</span>}
               </span>
             </div>
             {data.projectInfo.targetAudience && (
               <div>
-                <span className="text-sm text-gray-500">Target Audience: </span>
-                <span className="text-sm">{data.projectInfo.targetAudience}</span>
+                <span className="text-sm text-text-muted">Target Audience: </span>
+                <span className="text-sm text-primary">{data.projectInfo.targetAudience}</span>
               </div>
             )}
             {data.projectInfo.designGoals.length > 0 && (
               <div>
-                <span className="text-sm text-gray-500">Design Goals: </span>
-                <span className="text-sm capitalize">
+                <span className="text-sm text-text-muted">Design Goals: </span>
+                <span className="text-sm text-primary capitalize">
                   {data.projectInfo.designGoals.join(", ")}
                 </span>
               </div>
             )}
             {data.projectInfo.additionalNotes && (
               <div>
-                <span className="text-sm text-gray-500">Notes: </span>
-                <span className="text-sm">{data.projectInfo.additionalNotes}</span>
+                <span className="text-sm text-text-muted">Notes: </span>
+                <span className="text-sm text-primary">{data.projectInfo.additionalNotes}</span>
               </div>
             )}
-            <div>
-              <span className="text-sm text-gray-500">Contact Email: </span>
-              <span className="text-sm font-medium">
-                {data.projectInfo.contactEmail || <span className="text-gray-400 italic">Not provided</span>}
-              </span>
-            </div>
+            {data.projectInfo.contactEmail && (
+              <div>
+                <span className="text-sm text-text-muted">Contact Email: </span>
+                <span className="text-sm font-medium text-primary">
+                  {data.projectInfo.contactEmail}
+                </span>
+              </div>
+            )}
           </div>
         </SectionCard>
       </div>
 
-      <div className="mt-8 p-4 bg-blue-50 rounded-xl">
-        <p className="text-sm text-blue-800">
+      <div className="mt-8 p-4 bg-secondary/30 rounded-xl border border-secondary">
+        <p className="text-sm text-primary">
           <strong>Ready to submit?</strong> Click the &quot;Submit Brief&quot; button below to send
           your design preferences. We&apos;ll review your brief and get back to you with
           personalized recommendations.
