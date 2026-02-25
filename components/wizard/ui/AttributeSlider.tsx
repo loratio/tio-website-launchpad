@@ -14,33 +14,23 @@ export default function AttributeSlider({
   onChange,
 }: AttributeSliderProps) {
   return (
-    <div className="py-4">
-      <div className="flex justify-between items-center mb-3">
-        <span className="text-sm font-medium text-gray-600">{leftLabel}</span>
-        <span className="text-sm font-medium text-gray-600">{rightLabel}</span>
+    <div className="space-y-3">
+      <div className="flex justify-between text-sm">
+        <span className="text-text-muted">{leftLabel}</span>
+        <span className="text-text-muted">{rightLabel}</span>
       </div>
-
       <input
         type="range"
         min="0"
         max="100"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full"
+        onChange={(e) => onChange(parseInt(e.target.value))}
+        className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
       />
-
-      {/* Visual indicator */}
-      <div className="flex justify-center mt-2">
-        <div className="flex items-center gap-1">
-          {[0, 25, 50, 75, 100].map((tick) => (
-            <div
-              key={tick}
-              className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                Math.abs(value - tick) < 12.5 ? "bg-primary" : "bg-gray-200"
-              }`}
-            />
-          ))}
-        </div>
+      <div className="flex justify-center">
+        <span className="text-xs text-primary font-medium px-2 py-1 bg-secondary/50 rounded-full">
+          {value < 33 ? leftLabel : value > 66 ? rightLabel : "Balanced"}
+        </span>
       </div>
     </div>
   );

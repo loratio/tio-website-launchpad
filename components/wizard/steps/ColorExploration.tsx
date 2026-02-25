@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
 import { WizardData } from "../WizardContainer";
 import ColorPalette from "../ui/ColorPalette";
+import { Plus, X } from "lucide-react";
 
 interface ColorExplorationProps {
   data: WizardData;
   updateData: (updates: Partial<WizardData>) => void;
 }
 
-const colorPalettes = [
+const palettes = [
   {
     id: "ocean",
     name: "Ocean Depths",
@@ -64,74 +64,97 @@ const colorPalettes = [
 ];
 
 export default function ColorExploration({ data, updateData }: ColorExplorationProps) {
-  const [customColorInput, setCustomColorInput] = useState("");
-  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [customColor, setCustomColor] = useState("#192845");
 
   const togglePalette = (paletteId: string) => {
-    const current = data.selectedPalettes;
+    const current = data.selectedPalettes || [];
     if (current.includes(paletteId)) {
-      updateData({ selectedPalettes: current.filter((id) => id !== paletteId) });
+      updateData({ selectedPalettes: current.filter((p) => p !== paletteId) });
     } else {
       updateData({ selectedPalettes: [...current, paletteId] });
     }
   };
 
   const addCustomColor = () => {
-    const color = customColorInput.trim();
-    if (color && /^#[0-9A-Fa-f]{6}$/.test(color) && !data.customColors.includes(color)) {
-      updateData({ customColors: [...data.customColors, color] });
-      setCustomColorInput("");
+    if (customColor && !(data.customColors || []).includes(customColor)) {
+      updateData({ customColors: [...(data.customColors || []), customColor] });
     }
   };
 
   const removeCustomColor = (color: string) => {
-    updateData({ customColors: data.customColors.filter((c) => c !== color) });
+    updateData({ customColors: (data.customColors || []).filter((c) => c !== color) });
   };
 
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 font-[family-name:var(--font-cormorant)]">
-          Colors to explore
+        <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+          Colours to explore
         </h2>
-        <p className="text-gray-600">
-          Select color palettes that resonate with your vision. You can also add custom colors.
+        <p className="text-text-muted">
+          Select colour palettes that resonate with your brand vision. You can also add specific colours.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-        {colorPalettes.map((palette) => (
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        {palettes.map((palette) => (
           <ColorPalette
             key={palette.id}
             id={palette.id}
             name={palette.name}
             colors={palette.colors}
-            isSelected={data.selectedPalettes.includes(palette.id)}
+            isSelected={(data.selectedPalettes || []).includes(palette.id)}
             onToggle={() => togglePalette(palette.id)}
           />
         ))}
       </div>
 
       {/* Custom Colors Section */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Custom Colors (Optional)</h3>
+      <div className="p-5 bg-secondary/10 rounded-xl">
+        <h3 className="font-semibold text-primary mb-4">Add specific colours</h3>
 
-        {/* Display custom colors */}
-        {data.customColors.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {data.customColors.map((color) => (
+        <div className="flex gap-3 mb-4">
+          <div className="flex items-center gap-2 flex-1">
+            <input
+              type="color"
+              value={customColor}
+              onChange={(e) => setCustomColor(e.target.value)}
+              className="w-12 h-12 rounded-lg cursor-pointer border-2 border-secondary"
+            />
+            <input
+              type="text"
+              value={customColor}
+              onChange={(e) => setCustomColor(e.target.value)}
+              placeholder="#000000"
+              className="flex-1 px-4 py-3 border border-secondary rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none uppercase"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={addCustomColor}
+            className="px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-light transition-colors flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add
+          </button>
+        </div>
+
+        {(data.customColors || []).length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {(data.customColors || []).map((color) => (
               <div
                 key={color}
-                className="flex items-center gap-2 bg-gray-100 rounded-full pl-1 pr-3 py-1"
+                className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-secondary"
               >
                 <div
-                  className="w-6 h-6 rounded-full border border-gray-200"
+                  className="w-6 h-6 rounded border border-secondary"
                   style={{ backgroundColor: color }}
                 />
-                <span className="text-sm text-gray-700">{color}</span>
+                <span className="text-sm text-primary uppercase">{color}</span>
                 <button
+                  type="button"
                   onClick={() => removeCustomColor(color)}
-                  className="text-gray-400 hover:text-red-500 transition-colors"
+                  className="text-text-muted hover:text-red-500 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -139,58 +162,7 @@ export default function ColorExploration({ data, updateData }: ColorExplorationP
             ))}
           </div>
         )}
-
-        {/* Add custom color */}
-        {showCustomInput ? (
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={customColorInput}
-              onChange={(e) => setCustomColorInput(e.target.value)}
-              placeholder="#000000"
-              className="w-32 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-              maxLength={7}
-            />
-            {customColorInput && /^#[0-9A-Fa-f]{6}$/.test(customColorInput) && (
-              <div
-                className="w-8 h-8 rounded border border-gray-200"
-                style={{ backgroundColor: customColorInput }}
-              />
-            )}
-            <button
-              onClick={addCustomColor}
-              disabled={!/^#[0-9A-Fa-f]{6}$/.test(customColorInput)}
-              className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Add
-            </button>
-            <button
-              onClick={() => {
-                setShowCustomInput(false);
-                setCustomColorInput("");
-              }}
-              className="px-4 py-2 text-gray-500 text-sm hover:text-gray-700 transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => setShowCustomInput(true)}
-            className="flex items-center gap-2 text-primary hover:text-primary-dark transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            <span>Add custom color</span>
-          </button>
-        )}
       </div>
-
-      {(data.selectedPalettes.length > 0 || data.customColors.length > 0) && (
-        <p className="mt-6 text-sm text-gray-500">
-          {data.selectedPalettes.length} palette{data.selectedPalettes.length !== 1 ? "s" : ""} and{" "}
-          {data.customColors.length} custom color{data.customColors.length !== 1 ? "s" : ""} selected
-        </p>
-      )}
     </div>
   );
 }

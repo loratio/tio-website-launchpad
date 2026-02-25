@@ -13,6 +13,7 @@ interface StyleCardProps {
 }
 
 export default function StyleCard({
+  id,
   name,
   description,
   preview,
@@ -21,36 +22,37 @@ export default function StyleCard({
 }: StyleCardProps) {
   return (
     <motion.button
+      type="button"
+      onClick={onToggle}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      onClick={onToggle}
-      className={`relative w-full text-left rounded-xl border-2 overflow-hidden transition-all selection-ring ${
+      className={`relative w-full text-left rounded-xl overflow-hidden border-2 transition-all ${
         isSelected
-          ? "border-primary shadow-lg shadow-primary/20"
-          : "border-gray-200 hover:border-gray-300"
+          ? "border-primary ring-2 ring-primary/20"
+          : "border-secondary hover:border-primary/30"
       }`}
     >
+      {/* Preview Area */}
+      <div className="aspect-[4/3] bg-gradient-to-br from-secondary/30 to-secondary/10 p-4 flex items-center justify-center">
+        {preview}
+      </div>
+
+      {/* Info */}
+      <div className="p-4 bg-white">
+        <h3 className="font-semibold text-primary mb-1">{name}</h3>
+        <p className="text-sm text-text-muted">{description}</p>
+      </div>
+
       {/* Selection indicator */}
       {isSelected && (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="absolute top-3 right-3 z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center"
+          className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center"
         >
           <Check className="w-4 h-4 text-white" />
         </motion.div>
       )}
-
-      {/* Preview area */}
-      <div className="aspect-[4/3] bg-gray-50 flex items-center justify-center p-4">
-        {preview}
-      </div>
-
-      {/* Text content */}
-      <div className="p-4">
-        <h3 className="font-semibold text-gray-900 mb-1">{name}</h3>
-        <p className="text-sm text-gray-500">{description}</p>
-      </div>
     </motion.button>
   );
 }

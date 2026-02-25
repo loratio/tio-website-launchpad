@@ -12,6 +12,7 @@ interface ColorPaletteProps {
 }
 
 export default function ColorPalette({
+  id,
   name,
   colors,
   isSelected,
@@ -19,28 +20,18 @@ export default function ColorPalette({
 }: ColorPaletteProps) {
   return (
     <motion.button
+      type="button"
+      onClick={onToggle}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      onClick={onToggle}
-      className={`relative w-full text-left rounded-xl border-2 overflow-hidden transition-all selection-ring ${
+      className={`relative w-full text-left rounded-xl overflow-hidden border-2 transition-all ${
         isSelected
-          ? "border-primary shadow-lg shadow-primary/20"
-          : "border-gray-200 hover:border-gray-300"
+          ? "border-primary ring-2 ring-primary/20"
+          : "border-secondary hover:border-primary/30"
       }`}
     >
-      {/* Selection indicator */}
-      {isSelected && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          className="absolute top-3 right-3 z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center"
-        >
-          <Check className="w-4 h-4 text-white" />
-        </motion.div>
-      )}
-
       {/* Color swatches */}
-      <div className="flex h-24">
+      <div className="flex h-20">
         {colors.map((color, index) => (
           <div
             key={index}
@@ -50,10 +41,21 @@ export default function ColorPalette({
         ))}
       </div>
 
-      {/* Palette name */}
+      {/* Name */}
       <div className="p-3 bg-white">
-        <h3 className="text-sm font-medium text-gray-700">{name}</h3>
+        <h3 className="font-medium text-primary text-sm">{name}</h3>
       </div>
+
+      {/* Selection indicator */}
+      {isSelected && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg"
+        >
+          <Check className="w-4 h-4 text-white" />
+        </motion.div>
+      )}
     </motion.button>
   );
 }
